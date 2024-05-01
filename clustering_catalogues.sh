@@ -20,7 +20,7 @@ source /global/common/software/desi/users/adematti/cosmodesi_environment.sh main
 #My branch of the repo has a modified version of mkCat_main.py with extra arguments
 #that allow different z and magnitude cuts
 #Using a different directory name here is fine, and none of the lines below will be affected.
-export LSS_DIR=$SCRATCH/desi_test
+export LSS_DIR=$SCRATCH/desi
 mkdir -p $LSS_DIR
 cd $LSS_DIR
 #git clone https://github.com/desihub/LSS.git

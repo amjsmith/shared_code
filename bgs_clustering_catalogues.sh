@@ -133,7 +133,7 @@ do
 
   # Move to a new directory to make sure they aren't overwritten
   mkdir $OUTPUT_DIR/MAG${magnitude[$m]}
-  mv $OUTPUT_DIR/MAG-21.5_* $OUTPUT_DIR/MAG${magnitude[$m]}/
+  mv $OUTPUT_DIR/BGS_BRIGHT-21.5_* $OUTPUT_DIR/MAG${magnitude[$m]}/
   
 done
 

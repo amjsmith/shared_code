@@ -108,7 +108,7 @@ mv $OUTPUT_DIR/BGS_BRIGHT-21.5_* $OUTPUT_DIR/BGS_BRIGHT-21.5/
 
 
 ###################################################################################
-#CLUSTERING CATALOGUES WITH IMAGING SYSTEMATIC WEIGHTS FOR MAGNITUDE LIMITED SAMPLES
+#CLUSTERING CATALOGUES WITH IMAGING SYSTEMATIC WEIGHTS FOR MAGNITUDE THRESHOLD SAMPLES
 
 #set the magnitude and redshift limits for each sample
 declare -a magnitude=(-22.0 -21.5 -21.0 -20.5 -20.0  -19.5 -19.0  -18.5   -18.0)
@@ -131,7 +131,7 @@ do
     done
   done
 
-  # Move to a new directory to make sure they aren't overwritten in the next part
+  # Move to a new directory to make sure they aren't overwritten
   mkdir $OUTPUT_DIR/MAG${magnitude[$m]}
   mv $OUTPUT_DIR/MAG-21.5_* $OUTPUT_DIR/MAG${magnitude[$m]}/
   

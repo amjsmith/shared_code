@@ -28,7 +28,7 @@ git clone https://github.com/amjsmith/LSS.git
 
 #Make a directory to store the clustering and random catalogues, with the 
 #right directory structure expected by `mkCat_main.py`
-export OUTPUT_DIR=$LSS_DIR/Y1/LSS/iron/LSScats/v1.4
+export OUTPUT_DIR=$LSS_DIR/Y1/LSS/iron/LSScats/v1.4pip
 mkdir -p $OUTPUT_DIR/hpmaps
 
 #Copy the `full_HPmapcut` files that are needed, for data and randoms. 

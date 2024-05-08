@@ -28,13 +28,13 @@ git clone https://github.com/amjsmith/LSS.git
 
 #Make a directory to store the clustering and random catalogues, with the 
 #right directory structure expected by `mkCat_main.py`
-export OUTPUT_DIR=$LSS_DIR/Y1/LSS/iron/LSScats/v1.3
+export OUTPUT_DIR=$LSS_DIR/Y1/LSS/iron/LSScats/v1.4
 mkdir -p $OUTPUT_DIR/hpmaps
 
 #Copy the `full_HPmapcut` files that are needed, for data and randoms. 
 #This copies 4 of the 18 random files, but a different number can be used if needed.
-#v1.3 is the most up to date version, which includes BITWEIGHTS
-export DATA_DIR='/global/cfs/cdirs/desi/survey/catalogs/Y1/LSS/iron/LSScats/v1.3'
+#v1.4pip is the most up to date version, which includes BITWEIGHTS
+export DATA_DIR='/global/cfs/cdirs/desi/survey/catalogs/Y1/LSS/iron/LSScats/v1.4pip'
 cp $DATA_DIR/BGS_BRIGHT_full_HPmapcut.dat.fits $OUTPUT_DIR
 cp $DATA_DIR/BGS_BRIGHT_[0-3]_full_HPmapcut.ran.fits $OUTPUT_DIR
 cp $DATA_DIR/BGS_BRIGHT_frac_tlobs.fits $OUTPUT_DIR
@@ -54,11 +54,12 @@ cp $DATA_DIR/hpmaps/BGS* $OUTPUT_DIR/hpmaps/
 #`--bgs_zmax 1.0` - Maximum redshift limit (default is 0.5)
 #`--splitGC y` - Creates NGC and SGC files, which are needed when calculating the clustering
 #`--compmd altmtl` - This argument is recommended for bitweights
+#`--nz y` - This is needed to refactor the weights
 #By default it uses the `full_HPmapcut` files
 #To use the `full` files instead, include (with the empty string) --use_map_veto ''
 export PYTHONPATH=$LSS_DIR/LSS/py:$PYTHONPATH
 export SCRIPT_DIR=$LSS_DIR/LSS/scripts/main
-python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT --survey Y1 --verspec iron --version v1.3 --clusd y --clusran y --minr 0 --maxr 4 --compmd altmtl --bgs_zmin -0.0033 --bgs_zmax 1.0 --splitGC y #--use_map_veto ''
+python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT --survey Y1 --verspec iron --version v1.4pip --clusd y --clusran y --minr 0 --maxr 4 --compmd altmtl --bgs_zmin -0.0033 --bgs_zmax 1.0 --splitGC y --nz y #--use_map_veto ''
 
 
 #The files produced contain the fluxes in different bands, but not magnitudes. 
@@ -90,7 +91,7 @@ python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT_ful
 #`--imsys_zbin y` - do imaging systamtic regressions in z bins
 #`--absmagmd phot` - cut to the sample using the magnitudes with Sam's k-corrections, added above 
 #`--imsys_colname WEIGHT_IMLIN` - convert linear regression weights to WEIGHT_SYS in the final files
-python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT-21.5 --fulld n --imsys y --survey Y1 --verspec iron --imsys_zbin y --version v1.3 --use_map_veto _HPmapcut --clusd y --clusran y --minr 0 --maxr 4 --compmd altmtl --absmagmd phot --imsys_colname WEIGHT_IMLIN --splitGC y
+python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT-21.5 --fulld n --imsys y --survey Y1 --verspec iron --imsys_zbin y --version v1.4pip --use_map_veto _HPmapcut --clusd y --clusran y --minr 0 --maxr 4 --compmd altmtl --absmagmd phot --imsys_colname WEIGHT_IMLIN --splitGC y --nz y
 
 # Add the magnitudes and colours to the clustering catalogues and randoms
 for r in "${region[@]}"
@@ -119,7 +120,7 @@ declare -a      zmax=(  0.3   0.3   0.3   0.3   0.25   0.2   0.15   0.125   0.1)
 #magnitude and redshift limits are changed
 for m in `seq 0 8`
 do 
-  python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT-21.5 --fulld n --imsys y --survey Y1 --verspec iron --imsys_zbin y --version v1.3 --use_map_veto _HPmapcut --clusd y --clusran y --minr 0 --maxr 4 --compmd altmtl --absmagmd phot --imsys_colname WEIGHT_IMLIN --splitGC y --bgs_mag ${magnitude[$m]} --bgs_mag_zmin 0.05 --bgs_mag_zmax ${zmax[$m]}
+  python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT-21.5 --fulld n --imsys y --survey Y1 --verspec iron --imsys_zbin y --version v1.4pip --use_map_veto _HPmapcut --clusd y --clusran y --minr 0 --maxr 4 --compmd altmtl --absmagmd phot --imsys_colname WEIGHT_IMLIN --splitGC y --nz y --bgs_mag ${magnitude[$m]} --bgs_mag_zmin 0.05 --bgs_mag_zmax ${zmax[$m]}
   
   # Add the magnitudes and colours to the clustering catalogues and randoms
   for r in "${region[@]}"

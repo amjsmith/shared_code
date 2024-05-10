@@ -112,13 +112,13 @@ mv $OUTPUT_DIR/BGS_BRIGHT-21.5_* $OUTPUT_DIR/BGS_BRIGHT-21.5/
 #CLUSTERING CATALOGUES WITH IMAGING SYSTEMATIC WEIGHTS FOR MAGNITUDE THRESHOLD SAMPLES
 
 #set the magnitude and redshift limits for each sample
-declare -a magnitude=(-22.0 -21.5 -21.0 -20.5 -20.0  -19.5 -19.0  -18.5   -18.0)
-declare -a      zmax=(  0.3   0.3   0.3   0.3   0.25   0.2   0.15   0.125   0.1)
+declare -a magnitude=(-22.0 -21.5 -21.0 -20.5 -20.0  -19.5 -19.0  -18.5   -18.0 -17.5  -17.0)
+declare -a      zmax=(  0.3   0.3   0.3   0.3   0.25   0.2   0.15   0.125   0.1   0.08   0.07)
 
 #loop through each sample
 #be careful because the output files still get called `BGS_BRIGHT-21.5` even though the
 #magnitude and redshift limits are changed
-for m in `seq 0 8`
+for m in `seq 0 10`
 do 
   python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT-21.5 --fulld n --imsys y --survey Y1 --verspec iron --imsys_zbin y --version v1.4pip --use_map_veto _HPmapcut --clusd y --clusran y --minr 0 --maxr 4 --compmd altmtl --absmagmd phot --imsys_colname WEIGHT_IMLIN --splitGC y --nz y --bgs_mag ${magnitude[$m]} --bgs_mag_zmin 0.05 --bgs_mag_zmax ${zmax[$m]}
   

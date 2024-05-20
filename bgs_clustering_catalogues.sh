@@ -17,9 +17,9 @@
 #chmod 755 clustering_catalogues.sh
 
 #Set the number of random files to use
-export NUM_RAND=1
+export NUM_RAND=4
 #If you are re-running this script, delete existing outputs and cloned github repositories
-export DELETE_OLD=true
+export DELETE_OLD=false
 #Catalogue version to use. v1.4pip is latest version with PIP weights
 export VERSION=v1.4pip
 
@@ -31,7 +31,7 @@ source /global/common/software/desi/users/adematti/cosmodesi_environment.sh main
 #My branch of the repo has a modified version of mkCat_main.py with extra arguments
 #that allow different z and magnitude cuts
 #Using a different directory name here is fine, and none of the lines below will be affected.
-export LSS_DIR=$SCRATCH/desi_TEST
+export LSS_DIR=$SCRATCH/desi
 
 export CAT_DIR=Y1/LSS/iron/LSScats #directory structure of the LSS catalogue
 
@@ -150,7 +150,7 @@ declare -a      zmax=(  0.3   0.3   0.3   0.3   0.25   0.2   0.15   0.125   0.1 
 #be careful because the output files still get called `BGS_BRIGHT-21.5` even though the
 #magnitude and redshift limits are changed
 NUM_RAND_LOOP=`expr $NRAN - 1` #subtract 1 from NUM_RAND, for the for loop
-for m in `seq 0 1`
+for m in `seq 0 10`
 do 
   python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT-21.5 --fulld n --imsys y --survey Y1 --verspec iron --imsys_zbin y --version $VERSION --use_map_veto _HPmapcut --clusd y --clusran y --minr 0 --maxr $NUM_RAND --compmd altmtl --absmagmd phot --imsys_colname WEIGHT_IMLIN --splitGC y --nz y --bgs_mag ${magnitude[$m]} --bgs_mag_zmin 0.05 --bgs_mag_zmax ${zmax[$m]}
   

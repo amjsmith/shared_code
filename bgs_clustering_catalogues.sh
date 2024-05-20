@@ -45,7 +45,7 @@ fi
 mkdir -p $LSS_DIR
 cd $LSS_DIR
 #git clone https://github.com/desihub/LSS.git
-git clone https://github.com/amjsmith/LSS.git
+git clone https://github.com/amjsmith/LSS.git #clone my modified version of the LSS repo
 
 #Make a directory to store the clustering and random catalogues, with the 
 #right directory structure expected by `mkCat_main.py`
@@ -66,7 +66,7 @@ else
 fi
 cp -f $DATA_DIR/BGS_BRIGHT_frac_tlobs.fits $OUTPUT_DIR
 #cp -f $DATA_DIR/hpmaps/BGS* $OUTPUT_DIR/hpmaps/
-cp -f /global/cfs/cdirs/desi/survey/catalogs/Y1/LSS/iron/LSScats/v1.3/hpmaps/BGS* $OUTPUT_DIR/hpmaps/
+cp -f /global/cfs/cdirs/desi/survey/catalogs/$CAT_DIR/v1.3/hpmaps/BGS* $OUTPUT_DIR/hpmaps/
 
 #Copy the regular `full` files without the HPmapcut, if needed
 #cp $DATA_DIR/BGS_BRIGHT_full.dat.fits $OUTPUT_DIR
@@ -83,7 +83,7 @@ cp -f /global/cfs/cdirs/desi/survey/catalogs/Y1/LSS/iron/LSScats/v1.3/hpmaps/BGS
 #`--splitGC y` - Creates NGC and SGC files, which are needed when calculating the clustering
 #`--compmd altmtl` - This argument is recommended for bitweights
 #`--nz y` - This is needed to refactor the weights
-#`--splitGC y` - Create output files split into NGC and SGC. This is needed if you want to run xirunpc.py
+#`--splitGC y` - Create output files split into NGC and SGC. This is needed if you want to run `xirunpc.py`
 #By default it uses the `full_HPmapcut` files
 #To use the `full` files instead, include (with the empty string) --use_map_veto ''
 export PYTHONPATH=$LSS_DIR/LSS/py:$PYTHONPATH

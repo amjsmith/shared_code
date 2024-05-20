@@ -128,7 +128,7 @@ NUM_RAND_LOOP=`expr $NRAN - 1` #subtract 1 from NUM_RAND, for the for loop
 for r in "${region[@]}"
 do
   python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT-21.5_${r}clustering.dat.fits
-  for i in `seq 0 $NUM_RAND_LOOPD`
+  for i in `seq 0 $NUM_RAND_LOOP`
   do 
     python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT-21.5_${r}${i}_clustering.ran.fits
   done

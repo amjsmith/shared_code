@@ -58,9 +58,10 @@ mkdir -p $OUTPUT_DIR/hpmaps
 #Need to copy healpix maps from the v1.3 directory (they don't exist in v1.4pip directory, but haven't changed from v1.3)
 export DATA_DIR=/global/cfs/cdirs/desi/survey/catalogs/$CAT_DIR/$VERSION
 cp -f $DATA_DIR/BGS_BRIGHT_full_HPmapcut.dat.fits $OUTPUT_DIR
-if [ $NUM_RAND -lt 10 ]
+NUM_RAND_MIN_1=`expr $NUM_RAND - 1` #subtract 1 from NUM_RAND, since file numbers are zero indexed
+if [ $NUM_RAND -le 10 ]
 then
-  cp -f $DATA_DIR/BGS_BRIGHT_[0-$NUM_RAND]_full_HPmapcut.ran.fits $OUTPUT_DIR
+  cp -f $DATA_DIR/BGS_BRIGHT_[0-$NUM_RAND_MIN_1]_full_HPmapcut.ran.fits $OUTPUT_DIR
 else
   cp -f $DATA_DIR/BGS_BRIGHT_*_full_HPmapcut.ran.fits $OUTPUT_DIR
 fi
@@ -99,11 +100,10 @@ export PYTHONPATH=$LSS_DIR/hodpy:$PYTHONPATH
 
 declare -a region=("" "NGC_" "SGC_")
 
-NUM_RAND_LOOP=`expr $NRAN - 1` #subtract 1 from NUM_RAND, for the for loop
 for r in "${region[@]}"
 do
   python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT_${r}clustering.dat.fits
-  for i in `seq 0 $NUM_RAND_LOOP`
+  for i in `seq 0 $NUM_RAND_MIN_1`
   do 
     python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT_${r}${i}_clustering.ran.fits
   done
@@ -124,11 +124,10 @@ python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT_ful
 python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT-21.5 --fulld n --imsys y --survey Y1 --verspec iron --imsys_zbin y --version $VERSION --use_map_veto _HPmapcut --clusd y --clusran y --minr 0 --maxr $NUM_RAND --compmd altmtl --absmagmd phot --imsys_colname WEIGHT_IMLIN --splitGC y --nz y
 
 # Add the magnitudes and colours to the clustering catalogues and randoms
-NUM_RAND_LOOP=`expr $NRAN - 1` #subtract 1 from NUM_RAND, for the for loop
 for r in "${region[@]}"
 do
   python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT-21.5_${r}clustering.dat.fits
-  for i in `seq 0 $NUM_RAND_LOOP`
+  for i in `seq 0 $NUM_RAND_MIN_1`
   do 
     python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT-21.5_${r}${i}_clustering.ran.fits
   done
@@ -149,7 +148,6 @@ declare -a      zmax=(  0.3   0.3   0.3   0.3   0.25   0.2   0.15   0.125   0.1 
 #loop through each sample
 #be careful because the output files still get called `BGS_BRIGHT-21.5` even though the
 #magnitude and redshift limits are changed
-NUM_RAND_LOOP=`expr $NRAN - 1` #subtract 1 from NUM_RAND, for the for loop
 for m in `seq 0 10`
 do 
   python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT-21.5 --fulld n --imsys y --survey Y1 --verspec iron --imsys_zbin y --version $VERSION --use_map_veto _HPmapcut --clusd y --clusran y --minr 0 --maxr $NUM_RAND --compmd altmtl --absmagmd phot --imsys_colname WEIGHT_IMLIN --splitGC y --nz y --bgs_mag ${magnitude[$m]} --bgs_mag_zmin 0.05 --bgs_mag_zmax ${zmax[$m]}
@@ -158,7 +156,7 @@ do
   for r in "${region[@]}"
   do
     python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT-21.5_${r}clustering.dat.fits
-    for i in `seq 0 $NUM_RAND_LOOP`
+    for i in `seq 0 $NUM_RAND_MIN_1`
     do 
       python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT-21.5_${r}${i}_clustering.ran.fits
     done

@@ -123,7 +123,7 @@ python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT_ful
 #`--imsys_colname WEIGHT_IMLIN` - convert linear regression weights to WEIGHT_SYS in the final files
 python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT-21.5 --fulld n --imsys y --survey Y1 --verspec iron --imsys_zbin y --version $VERSION --use_map_veto _HPmapcut --clusd y --clusran y --minr 0 --maxr $NUM_RAND --compmd altmtl --absmagmd phot --imsys_colname WEIGHT_IMLIN --splitGC y --nz y
 
-# Add the magnitudes and colours to the clustering catalogues and randoms
+#Add the magnitudes and colours to the clustering catalogues and randoms
 for r in "${region[@]}"
 do
   python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT-21.5_${r}clustering.dat.fits
@@ -133,10 +133,12 @@ do
   done
 done
 
-# Move to a new directory to make sure they aren't overwritten in the next part
+#Move to a new directory to make sure they aren't overwritten in the next part
 mkdir $OUTPUT_DIR/BGS_BRIGHT-21.5
 mv $OUTPUT_DIR/BGS_BRIGHT-21.5_* $OUTPUT_DIR/BGS_BRIGHT-21.5/
 
+#The full_HPmapcut files are needed in the same directory when calculating the clustering
+cp $OUTPUT_DIR/*full_HPmapcut* $OUTPUT_DIR/BGS_BRIGHT-21.5/
 
 ###################################################################################
 #CLUSTERING CATALOGUES WITH IMAGING SYSTEMATIC WEIGHTS FOR MAGNITUDE THRESHOLD SAMPLES
@@ -152,7 +154,7 @@ for m in `seq 0 10`
 do 
   python $SCRIPT_DIR/mkCat_main.py --basedir $LSS_DIR --type BGS_BRIGHT-21.5 --fulld n --imsys y --survey Y1 --verspec iron --imsys_zbin y --version $VERSION --use_map_veto _HPmapcut --clusd y --clusran y --minr 0 --maxr $NUM_RAND --compmd altmtl --absmagmd phot --imsys_colname WEIGHT_IMLIN --splitGC y --nz y --bgs_mag ${magnitude[$m]} --bgs_mag_zmin 0.05 --bgs_mag_zmax ${zmax[$m]}
   
-  # Add the magnitudes and colours to the clustering catalogues and randoms
+  #Add the magnitudes and colours to the clustering catalogues and randoms
   for r in "${region[@]}"
   do
     python $LSS_DIR/hodpy/tools/add_magnitudes_colours.py $OUTPUT_DIR/BGS_BRIGHT-21.5_${r}clustering.dat.fits
@@ -162,8 +164,11 @@ do
     done
   done
 
-  # Move to a new directory to make sure they aren't overwritten
+  #Move to a new directory to make sure they aren't overwritten
   mkdir $OUTPUT_DIR/MAG${magnitude[$m]}
   mv $OUTPUT_DIR/BGS_BRIGHT-21.5_* $OUTPUT_DIR/MAG${magnitude[$m]}/
+
+  #The full_HPmapcut files are needed in the same directory when calculating the clustering
+  cp $OUTPUT_DIR/*full_HPmapcut* $OUTPUT_DIR/MAG${magnitude[$m]}/
   
 done
